@@ -5,7 +5,7 @@ import logging
 
 bot = telebot.TeleBot('6799026148:AAEE3F5aTgVTV4U65ktGzFr8fqNIBIkDgcA')
 
-your_channel_id = -1001838455066
+CHANNEL_ID = -1001838455066
 
 
 def process_lines(lines_subset):
