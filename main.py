@@ -6,7 +6,7 @@ from telebot import types
 import time
 cooldowns = {}
 
-bot = telebot.TeleBot('1970098920:AAHNU5dYWWATCtojpfKgHuwfYXHgp5dyOKs')
+bot = telebot.TeleBot('6799026148:AAEE3F5aTgVTV4U65ktGzFr8fqNIBIkDgcA')
 
 CHANNEL_ID = -1001838455066
 POST_CHANNEL = -1002078366567
