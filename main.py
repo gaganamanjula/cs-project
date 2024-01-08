@@ -6,23 +6,41 @@ from telebot import types
 import time
 cooldowns = {}
 
-bot = telebot.TeleBot('6799026148:AAEE3F5aTgVTV4U65ktGzFr8fqNIBIkDgcA')
+bot = telebot.TeleBot('1970098920:AAHNU5dYWWATCtojpfKgHuwfYXHgp5dyOKs')
 
 CHANNEL_ID = -1001838455066
+POST_CHANNEL = -1002078366567
+
+@bot.message_handler(commands=['cmds'])
+def commandHandler(message):
+  user_id = message.from_user.id
+  try:
+    bot.forward_message(user_id, from_chat_id=POST_CHANNEL, message_id=5)
+  except Exception as e:
+    print(f"Error forwarding message: {e}")
+
+def process_lines(lines_subset):
+  for line in lines_subset:
+    cc_number = line.strip()
+    checking_function(cc_number, bot)
+
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
   user_id = message.from_user.id
   is_member = bot.get_chat_member(CHANNEL_ID, user_id).status != 'left'
   if is_member:
-    bot.reply_to(message,"Welcome Start checking cc's with Cybersource Gateway\n/cs 440393xxxxxxxxxx|xx|xx|xxx\n💛 Gift from @xSukka")
+    user_id = message.from_user.id
+    try:
+      bot.forward_message(user_id, from_chat_id=POST_CHANNEL, message_id=4)
+    except Exception as e:
+      print(f"Error forwarding message: {e}")
   else:
     # User is not a member of the channel, send an inline button with the invite link
-    invite_link = bot.export_chat_invite_link(CHANNEL_ID)
-    keyboard = types.InlineKeyboardMarkup()
-    join_button = types.InlineKeyboardButton("Join Channel", url=invite_link)
-    keyboard.add(join_button)
-    bot.send_message(user_id,"Welcome Start checking cc's with Cybersource Gateway\n/cs 440393xxxxxxxxxx|xx|xx|xxx\n💛 Gift from @xSukka\n\nYou are not a member of the update channel. Click below to join:", reply_markup=keyboard)
+    try:
+      bot.forward_message(user_id, from_chat_id=POST_CHANNEL, message_id=4)
+    except Exception as e:
+      print(f"Error forwarding message: {e}")
   
 @bot.message_handler(commands=['cs'])
 def check_cc(message):
@@ -39,9 +57,9 @@ def check_cc(message):
       # Check if the user has a cooldown time recorded
       if user_id in cooldowns:
           # Check if the cooldown period (25 seconds) has passed
-          if current_time - cooldowns[user_id] < 50:
-              remaining_time = int(50 - (current_time - cooldowns[user_id]))
-              bot.reply_to(message, f"Please wait {remaining_time} seconds before using /cs again.")
+          if current_time - cooldowns[user_id] < 40:
+              remaining_time = int(40 - (current_time - cooldowns[user_id]))
+              bot.reply_to(message, f"Please wait {remaining_time} seconds ")
               return
 
       # Update or set the cooldown time for the user
@@ -49,16 +67,16 @@ def check_cc(message):
 
       # Rest of your /cs command logic here
       cc_number = message.text.split(' ')[1]
-      msg = bot.reply_to(message, "Checking..!")
+      msg = bot.reply_to(message, "**Checking..!**", parse_mode='Markdown')
       check_thread = threading.Thread(target=checking_function, args=(cc_number, bot, msg, update_cooldown, user_id))
       check_thread.start()
     else:
       # User is not a member of the channel, send an inline button with the invite link
-      invite_link = bot.export_chat_invite_link(CHANNEL_ID)
-      keyboard = types.InlineKeyboardMarkup()
-      join_button = types.InlineKeyboardButton("Join Channel", url=invite_link)
-      keyboard.add(join_button)
-      bot.send_message(user_id,"Welcome Start checking cc's with Cybersource Gateway\n/cs 440393xxxxxxxxxx|xx|xx|xxx\n💛 Gift from @xSukka\n\nYou are not a member of the update channel. Click below to join:", reply_markup=keyboard)
+      user_id = message.from_user.id
+      try:
+        bot.forward_message(user_id, from_chat_id=POST_CHANNEL, message_id=4)
+      except Exception as e:
+        print(f"Error forwarding message: {e}")
 
   except Exception as e:
     bot.send_message(message.chat.id,
