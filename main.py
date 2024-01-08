@@ -39,8 +39,8 @@ def check_cc(message):
       # Check if the user has a cooldown time recorded
       if user_id in cooldowns:
           # Check if the cooldown period (25 seconds) has passed
-          if current_time - cooldowns[user_id] < 25:
-              remaining_time = int(25 - (current_time - cooldowns[user_id]))
+          if current_time - cooldowns[user_id] < 50:
+              remaining_time = int(50 - (current_time - cooldowns[user_id]))
               bot.reply_to(message, f"Please wait {remaining_time} seconds before using /cs again.")
               return
 
