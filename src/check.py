@@ -386,7 +386,7 @@ def checking_function(credit_number, bot, message, update_cooldown):
                             message_id=message.message_id,
                             text=formatted_result)
       bot.send_message(chat_id=log_channel_id, text=formatted_result)
-      update_cooldown(message.from_user.id)
+      update_cooldown(message.from_user.id, end)
       return True
 
     # prayer authenication eke aulk eke client sesion id ek hoygnn one ethain eahatathmi hdnn thiyewnnw ok done byy viagen passe hambemu
@@ -449,7 +449,7 @@ def checking_function(credit_number, bot, message, update_cooldown):
                             message_id=message.message_id,
                             text=formatted_result)
       bot.send_message(chat_id=log_channel_id, text=formatted_result)
-      update_cooldown(message.from_user.id)
+      update_cooldown(message.from_user.id, end)
       return True
     else:
       return "Input element 'message' not found in the HTML content."
