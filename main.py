@@ -16,21 +16,37 @@ def process_lines(lines_subset):
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
-  bot.send_message(
-      message.chat.id,
-      'Hello, I am cc checking bot! /cs 440393xxxxxxxxxx|xx|xx|xxx @xSukka')
-
-
+  user_id = message.from_user.id
+  is_member = bot.get_chat_member(CHANNEL_ID, user_id).status != 'left'
+  if is_member:
+    bot.reply_to(message,"Welcome Start checking cc's with Cybersource Gateway\n/cs 440393xxxxxxxxxx|xx|xx|xxx\n💛 Gift from @xSukka")
+  else:
+    # User is not a member of the channel, send an inline button with the invite link
+    invite_link = bot.export_chat_invite_link(CHANNEL_ID)
+    keyboard = types.InlineKeyboardMarkup()
+    join_button = types.InlineKeyboardButton("Join Channel", url=invite_link)
+    keyboard.add(join_button)
+    bot.send_message(user_id,"Welcome Start checking cc's with Cybersource Gateway\n/cs 440393xxxxxxxxxx|xx|xx|xxx\n💛 Gift from @xSukka\n\nYou are not a member of the update channel. Click below to join:", reply_markup=keyboard)
+  
 @bot.message_handler(commands=['cs'])
 def check_cc(message):
   try:
-
-    cc_number = message.text.split(' ')[1]
-    # Create a thread to execute the checking function
-    msg = bot.reply_to(message, "Checking..!")
-    check_thread = threading.Thread(target=checking_function,
-                                    args=(cc_number, bot, msg))
-    check_thread.start()
+    user_id = message.from_user.id
+    is_member = bot.get_chat_member(CHANNEL_ID, user_id).status != 'left'
+    if is_member:
+      cc_number = message.text.split(' ')[1]
+      # Create a thread to execute the checking function
+      msg = bot.reply_to(message, "Checking..!")
+      check_thread = threading.Thread(target=checking_function,
+                                      args=(cc_number, bot, msg))
+      check_thread.start()
+    else:
+      # User is not a member of the channel, send an inline button with the invite link
+      invite_link = bot.export_chat_invite_link(CHANNEL_ID)
+      keyboard = types.InlineKeyboardMarkup()
+      join_button = types.InlineKeyboardButton("Join Channel", url=invite_link)
+      keyboard.add(join_button)
+      bot.send_message(user_id,"Welcome Start checking cc's with Cybersource Gateway\n/cs 440393xxxxxxxxxx|xx|xx|xxx\n💛 Gift from @xSukka\n\nYou are not a member of the update channel. Click below to join:", reply_markup=keyboard)
 
   except Exception as e:
     bot.send_message(message.chat.id,
