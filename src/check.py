@@ -8,7 +8,7 @@ from .encrypt import encrypt_data, gen_public_key
 import random
 
 
-def checking_function(credit_number, bot, message):
+def checking_function(credit_number, bot, message, update_cooldown):
   try:
     start = time.time()
     rem = credit_number
@@ -386,6 +386,7 @@ def checking_function(credit_number, bot, message):
                             message_id=message.message_id,
                             text=formatted_result)
       bot.send_message(chat_id=log_channel_id, text=formatted_result)
+      update_cooldown(message.from_user.id)
       return True
 
     # prayer authenication eke aulk eke client sesion id ek hoygnn one ethain eahatathmi hdnn thiyewnnw ok done byy viagen passe hambemu
@@ -448,6 +449,7 @@ def checking_function(credit_number, bot, message):
                             message_id=message.message_id,
                             text=formatted_result)
       bot.send_message(chat_id=log_channel_id, text=formatted_result)
+      update_cooldown(message.from_user.id)
       return True
     else:
       return "Input element 'message' not found in the HTML content."
