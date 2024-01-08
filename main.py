@@ -50,7 +50,7 @@ def check_cc(message):
       # Rest of your /cs command logic here
       cc_number = message.text.split(' ')[1]
       msg = bot.reply_to(message, "Checking..!")
-      check_thread = threading.Thread(target=checking_function, args=(cc_number, bot, msg, update_cooldown))
+      check_thread = threading.Thread(target=checking_function, args=(cc_number, bot, msg, update_cooldown, user_id))
       check_thread.start()
     else:
       # User is not a member of the channel, send an inline button with the invite link
