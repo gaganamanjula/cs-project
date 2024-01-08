@@ -1,0 +1,4 @@
+requests
+cryptography
+bs4
+telebot
