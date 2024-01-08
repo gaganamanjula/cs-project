@@ -2,6 +2,7 @@ import telebot
 from src.check import checking_function
 import threading
 import logging
+from telebot import types
 
 bot = telebot.TeleBot('6799026148:AAEE3F5aTgVTV4U65ktGzFr8fqNIBIkDgcA')
 
