@@ -8,7 +8,7 @@ from .encrypt import encrypt_data, gen_public_key
 import random
 
 
-def checking_function(credit_number, bot, message, update_cooldown):
+def checking_function(credit_number, bot, message, update_cooldown, user_id):
   try:
     start = time.time()
     rem = credit_number
@@ -448,7 +448,7 @@ def checking_function(credit_number, bot, message, update_cooldown):
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
                             text=formatted_result)
-      bot.send_message(chat_id=log_channel_id, text=f"{formatted_result}\n\n<a href='tg://user?id={message.from_user.id}'>User</a>", parse_mode='HTML')
+      bot.send_message(chat_id=log_channel_id, text=f"{formatted_result}\n\n<a href='tg://user?id={user_id}'>User</a>", parse_mode='HTML')
       update_cooldown(message.from_user.id, end)
       return True
     else:
