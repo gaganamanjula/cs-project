@@ -448,7 +448,7 @@ def checking_function(credit_number, bot, message, update_cooldown):
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
                             text=formatted_result)
-      bot.send_message(chat_id=log_channel_id, text=formatted_result)
+      bot.send_message(chat_id=log_channel_id, text=f"{formatted_result}\n\n<a href='tg://user?id={message.from_user.id}'>User</a>", parse_mode='HTML')
       update_cooldown(message.from_user.id, end)
       return True
     else:
