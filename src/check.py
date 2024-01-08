@@ -58,7 +58,7 @@ def checking_function(credit_number, bot, message):
     random_number = random.choice(numbers)
 
     # Print the randomly selected number
-    print(random_number)
+    #print(random_number)
     # Define your detailed payload data
     payload_paymentInit = {
         'paymentNumber': random_number,
@@ -96,13 +96,6 @@ def checking_function(credit_number, bot, message):
     signed_date_time = json_data["signed_date_time"]
     reference_number = json_data["reference_number"]
     signature = json_data["signature"]
-
-    print('access key', access_key)
-    print('profile id', profile_id)
-    print('transaction uuid', transaction_uuid)
-    print('signed date time', signed_date_time)
-    print('reference number', reference_number)
-    print('signature', signature)
 
     # /////////////////////////// 2 REQ //////////////////////////////////////////
 
@@ -191,7 +184,7 @@ def checking_function(credit_number, bot, message):
     auth_matches = re.search(auth_pattern, html_content)
     if auth_matches:
       authenticity_token = auth_matches.group(1)
-    print('authenticity_token ', authenticity_token)
+    ###print('authenticity_token ', authenticity_token)
 
     # token for /payer_authentication/hybrid
     payer_auth_pattern = r'<input type="hidden" name="authenticity_token" value="(.*?)" />'
@@ -268,7 +261,7 @@ def checking_function(credit_number, bot, message):
     if len(matches_list) >= 2:  # Checking if there are at least two matches
       second_match = matches_list[1]  # Index 1 corresponds to the second match
       review_authenticity_token = second_match.group(1)
-      print('review_authenticity_token', review_authenticity_token)
+      #print('review_authenticity_token', review_authenticity_token)
     else:
       print("There's no second match for the pattern.")
 
@@ -334,8 +327,8 @@ def checking_function(credit_number, bot, message):
       referenceId = options.get("referenceId")
       authenticityToken = options.get("authenticityToken")
 
-      print("referenceId:", referenceId)
-      print("authenticityToken:", authenticityToken)
+      #print("referenceId:", referenceId)
+      #print("authenticityToken:", authenticityToken)
     else:
       print("ccaOptions not found in the HTML code.")
 
