@@ -3,17 +3,12 @@ from src.check import checking_function
 import threading
 import logging
 from telebot import types
+import time
+cooldowns = {}
 
 bot = telebot.TeleBot('6799026148:AAEE3F5aTgVTV4U65ktGzFr8fqNIBIkDgcA')
 
 CHANNEL_ID = -1001838455066
-
-
-def process_lines(lines_subset):
-  for line in lines_subset:
-    cc_number = line.strip()
-    checking_function(cc_number, bot)
-
 
 @bot.message_handler(commands=['start'])
 def start_message(message):
@@ -34,12 +29,28 @@ def check_cc(message):
   try:
     user_id = message.from_user.id
     is_member = bot.get_chat_member(CHANNEL_ID, user_id).status != 'left'
+    
+    def update_cooldown(user_id):
+      cooldowns[user_id] = time.time()
+      
     if is_member:
+      current_time = time.time()
+
+      # Check if the user has a cooldown time recorded
+      if user_id in cooldowns:
+          # Check if the cooldown period (25 seconds) has passed
+          if current_time - cooldowns[user_id] < 25:
+              remaining_time = int(25 - (current_time - cooldowns[user_id]))
+              bot.reply_to(message, f"Please wait {remaining_time} seconds before using /cs again.")
+              return
+
+      # Update or set the cooldown time for the user
+      cooldowns[user_id] = current_time
+
+      # Rest of your /cs command logic here
       cc_number = message.text.split(' ')[1]
-      # Create a thread to execute the checking function
       msg = bot.reply_to(message, "Checking..!")
-      check_thread = threading.Thread(target=checking_function,
-                                      args=(cc_number, bot, msg))
+      check_thread = threading.Thread(target=checking_function, args=(cc_number, bot, msg, update_cooldown))
       check_thread.start()
     else:
       # User is not a member of the channel, send an inline button with the invite link
