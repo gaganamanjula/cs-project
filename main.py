@@ -30,8 +30,8 @@ def check_cc(message):
     user_id = message.from_user.id
     is_member = bot.get_chat_member(CHANNEL_ID, user_id).status != 'left'
     
-    def update_cooldown(user_id):
-      cooldowns[user_id] = time.time()
+    def update_cooldown(user_id, time):
+      cooldowns[user_id] = time
       
     if is_member:
       current_time = time.time()
