@@ -444,11 +444,10 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
       end = time.time()
       elapsed_time = end - start
       formated_time = "{:.2f}".format(elapsed_time)
-      requestedUser = f"<a href='tg://user?id={user_id}'>{message.from_user.first_name}</a>"
-      formatted_result = f"<b>CYBERSOURCE CHARGE</b>\n\n<b>» CARD :</b> <code>{credit_number}</code>\n<b>» STATUS :</b> {message_decision_value}\n<b>» RESPONSE :</b> {message_decision} \n<b>» CURRENCY : LKR\n\n» REQ BY : {requestedUser}\n» TIME : {formated_time}</b>"
+      formatted_result = f"<b>CYBERSOURCE CHARGE</b>\n\n<b>» CARD :</b> <code>{credit_number}</code>\n<b>» STATUS :</b> {message_decision_value}\n<b>» RESPONSE :</b> {message_decision} \n<b>» CURRENCY : LKR\n\n» TIME : {formated_time}</b>"
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
-                            text=formatted_result, parse_mode='HTML')
+                            text=formatted_result, parse_mode="HTML")
       bot.send_message(chat_id=log_channel_id, text=f"{formatted_result}\n\n<a href='tg://user?id={user_id}'>User</a>", parse_mode='HTML')
       update_cooldown(message.from_user.id, end)
       return True
