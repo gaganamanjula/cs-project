@@ -384,7 +384,7 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
       formatted_result = f"__» CYBERSOURCE CHARGE__\n\n**» CARD :** `{credit_number}`\n**» STATUS :** DECLINE\n**» RESPONSE :** Need Authentication \n**» CURRENCY : LKR**\n\n**» TIME : **{formated_time}"
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
-                            text=formatted_result)
+                            text=formatted_result, parse_mode="Markdown")
       bot.send_message(chat_id=log_channel_id, text=formatted_result)
       update_cooldown(message.from_user.id, end)
       return True
