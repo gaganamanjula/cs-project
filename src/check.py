@@ -381,7 +381,7 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
       end = time.time()
       elapsed_time = end - start
       formated_time = "{:.2f}".format(elapsed_time)
-      formatted_result = f"» Status - DECLINE\n» Card - {credit_number}\n» Gateway - Cybersource\n» Response - Need to Authenticate\n\n» Time - {formated_time} sec"
+      formatted_result = f"__» CYBERSOURCE CHARGE__\n\n**» CARD :** `{credit_number}`\n**» STATUS :** DECLINE\n**» RESPONSE :** Need Authentication \n**» CURRENCY : LKR**\n\n**» TIME : **{formated_time}"
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
                             text=formatted_result)
