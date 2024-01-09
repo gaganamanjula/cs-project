@@ -444,7 +444,7 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
       end = time.time()
       elapsed_time = end - start
       formated_time = "{:.2f}".format(elapsed_time)
-      formatted_result = f"**CYBERSOURCE CHARGE**\n\n**» CARD :** `{credit_number}`\n**» STATUS :** {message_decision_value}\n**» RESPONSE :** {message_decision} \n**» CURRENCY : LKR**\n\n**» TIME : **{formated_time}"
+      formatted_result = f"__» CYBERSOURCE CHARGE__\n\n**» CARD :** `{credit_number}`\n**» STATUS :** {message_decision_value}\n**» RESPONSE :** {message_value} \n**» CURRENCY : LKR**\n\n**» TIME : **{formated_time}"
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
                             text=formatted_result, parse_mode='Markdown')
