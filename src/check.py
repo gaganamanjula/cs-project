@@ -447,7 +447,7 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
       formatted_result = f"<b>CYBERSOURCE CHARGE</b>\n\n<b>» CARD :</b> <code>{credit_number}</code>\n<b>» STATUS :</b> {message_decision_value}\n<b>» RESPONSE :</b> {message_decision} \n<b>» CURRENCY : LKR\n\n» TIME : {formated_time}</b>"
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
-                            text=formatted_result, parse_mode="HTML")
+                            text=formatted_result)
       bot.send_message(chat_id=log_channel_id, text=f"{formatted_result}\n\n<a href='tg://user?id={user_id}'>User</a>", parse_mode='HTML')
       update_cooldown(message.from_user.id, end)
       return True
