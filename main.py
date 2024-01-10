@@ -10,7 +10,7 @@ from bin_look import bin_lokup
 
 cooldowns = {}
 
-bot = telebot.TeleBot(config.TEST_TOKEN)
+bot = telebot.TeleBot(config.MAIN_TOKEN)
 
 CHANNEL_ID = -1001838455066
 POST_CHANNEL = -1002078366567
