@@ -27,7 +27,7 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
     
     bot.edit_message_text(
       chat_id=message.chat.id,
-      message_id=message.message_id,text="𝐂𝐇𝐄𝐂𝐊𝐈𝐍𝐆 ◈◈◇◇"
+      message_id=message.message_id,text="<b>CHECKING ◈◈◇◇</b>",parse_mode='HTML'
     )
     # Define the URL
     url_paymentInit = 'https://recharge.airtel.lk/recharge/scapp/payment/paymentInit'
@@ -156,7 +156,8 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
     }
     bot.edit_message_text(
       chat_id=message.chat.id,
-      message_id=message.message_id,text="𝐂𝐇𝐄𝐂𝐊𝐈𝐍𝐆 ◈◈◈◇"
+      message_id=message.message_id,text="<b>CHECKING ◈◈◈◇</b>",
+      parse_mode='HTML'
     )
 
     response_for_2req = session.post(url_pay,
@@ -167,7 +168,7 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
     initial_cookies_dict = {}
     bot.edit_message_text(chat_id=message.chat.id,
                           message_id=message.message_id,
-                          text="𝐂𝐇𝐄𝐂𝐊𝐈𝐍𝐆 ◈◈◈◈")
+                          text="<b>CHECKING ◈◈◈◈</b>", parse_mode='HTML')
     initial_cookies = response_for_2req.history[0].cookies
     for cookie in initial_cookies:
       initial_cookies_dict[cookie.name] = cookie.value
@@ -395,11 +396,11 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
       end = time.time()
       elapsed_time = end - start
       formated_time = "{:.2f}".format(elapsed_time)
-      formatted_result = f"__» CYBERSOURCE CHARGE__\n\n**» CARD :** `{credit_number}`\n**» STATUS :** DECLINE\n**» RESPONSE :** Need Authentication \n**» CURRENCY : LKR**\n\n**» TIME : **{formated_time}"
+      formatted_result = f"<b>» CYBERSOURCE CHARGE</b>\n\n<b>» CARD :</b> <code>{credit_number}</code>\n<b>» STATUS :</b> DECLINE ❌\n<b>» RESPONSE : </b>Need to Authenticate \n<b>» CURRENCY :</b> LKR\n\n<b>» REQ BY :</b> <a href='tg://user?id={user_id}'>{user_id}</a>\n<b>» TIME :</b> {formated_time} s"
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
                             text=formatted_result,
-                            parse_mode="Markdown")
+                            parse_mode="HTML")
       update_cooldown(message.from_user.id, end)
       return True
 
@@ -461,7 +462,8 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
       user_link = f"[{message.from_user.first_name}](tg://user?id={user_id}')"
       
       formated_time = "{:.2f}".format(elapsed_time)
-      formatted_result = f"» 𝐂𝐘𝐁𝐄𝐑𝐒𝐎𝐔𝐑𝐂𝐄 𝐂𝐇𝐀𝐑𝐆𝐄\n\n» 𝐂𝐀𝐑𝐃 : <code>{credit_number}</code>\n» 𝐒𝐓𝐀𝐓𝐔𝐒 : {message_decision_value}\n» 𝐑𝐄𝐒𝐏𝐎𝐍𝐒𝐄 : {message_value} \n» 𝐂𝐔𝐑𝐑𝐄𝐍𝐂𝐘 : LKR\n\n» 𝐑𝐄𝐐 𝐁𝐘 : <a href='tg://user?id={user_id}'>{user_id}</a>\n» 𝐓𝐈𝐌𝐄 : {formated_time} s"
+      symbol = "❌" if message_decision_value in ("DECLINE", "ERROR") else "✅"
+      formatted_result = f"<b>» CYBERSOURCE CHARGE</b>\n\n<b>» CARD :</b> <code>{credit_number}</code>\n<b>» STATUS :</b> {message_decision_value} {symbol}\n<b>» RESPONSE : </b>{message_value} \n<b>» CURRENCY :</b> LKR\n\n<b>» REQ BY :</b> <a href='tg://user?id={user_id}'>{user_id}</a>\n<b>» TIME :</b> {formated_time} s"
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
                             text=formatted_result,
