@@ -1,15 +1,20 @@
-import telebot
-from src.check import checking_function
-import threading
-import logging
-from telebot import types
 import time
+import telebot
+import logging
+import threading
+from telebot import types
+
+from config import config
+from src.check import checking_function
+from bin_look import bin_lokup
+
 cooldowns = {}
 
-bot = telebot.TeleBot('6799026148:AAEE3F5aTgVTV4U65ktGzFr8fqNIBIkDgcA')
+bot = telebot.TeleBot(config.MAIN_TOKEN)
 
 CHANNEL_ID = -1001838455066
 POST_CHANNEL = -1002078366567
+
 
 @bot.message_handler(commands=['cmds'])
 def commandHandler(message):
@@ -18,11 +23,6 @@ def commandHandler(message):
     bot.forward_message(user_id, from_chat_id=POST_CHANNEL, message_id=5)
   except Exception as e:
     print(f"Error forwarding message: {e}")
-
-def process_lines(lines_subset):
-  for line in lines_subset:
-    cc_number = line.strip()
-    checking_function(cc_number, bot)
 
 
 @bot.message_handler(commands=['start'])
@@ -41,34 +41,53 @@ def start_message(message):
       bot.forward_message(user_id, from_chat_id=POST_CHANNEL, message_id=4)
     except Exception as e:
       print(f"Error forwarding message: {e}")
-  
+
+
+@bot.message_handler(commands=['bin'])
+def bin_message(message):
+  try:
+    bin = message.text.split(' ')[1][:6]
+    response_data = bin_lokup(bin)
+    
+    bin_number = response_data['bin']
+    country = response_data['country']
+    card_type = response_data['card_type']
+    bank = response_data['bank']
+    bot.reply_to(message, f"Bin: {bin_number}\nBank: {bank}\nCountry: {country}\nCard Type: {card_type}")
+    
+    
+  except Exception as e:
+    bot.send_message(message.chat.id, f"Error: {e}")
+
 @bot.message_handler(commands=['cs'])
 def check_cc(message):
   try:
     user_id = message.from_user.id
     is_member = bot.get_chat_member(CHANNEL_ID, user_id).status != 'left'
-    
+
     def update_cooldown(user_id, time):
       cooldowns[user_id] = time
-      
+
     if is_member:
       current_time = time.time()
 
       # Check if the user has a cooldown time recorded
       if user_id in cooldowns:
-          # Check if the cooldown period (25 seconds) has passed
-          if current_time - cooldowns[user_id] < 40:
-              remaining_time = int(40 - (current_time - cooldowns[user_id]))
-              bot.reply_to(message, f"Please wait {remaining_time} seconds ")
-              return
+        # Check if the cooldown period (25 seconds) has passed
+        if current_time - cooldowns[user_id] < 40:
+          remaining_time = int(40 - (current_time - cooldowns[user_id]))
+          bot.reply_to(message, f"Please wait {remaining_time} seconds ")
+          return
 
       # Update or set the cooldown time for the user
       cooldowns[user_id] = current_time
 
       # Rest of your /cs command logic here
       cc_number = message.text.split(' ')[1]
-      msg = bot.reply_to(message, "**Checking..!**", parse_mode='Markdown')
-      check_thread = threading.Thread(target=checking_function, args=(cc_number, bot, msg, update_cooldown, user_id))
+      msg = bot.reply_to(message, "𝐂𝐇𝐄𝐂𝐊𝐈𝐍𝐆 ◈◇◇◇", parse_mode='Markdown')
+      check_thread = threading.Thread(target=checking_function,
+                                      args=(cc_number, bot, msg,
+                                            update_cooldown, user_id))
       check_thread.start()
     else:
       # User is not a member of the channel, send an inline button with the invite link
