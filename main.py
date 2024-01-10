@@ -10,7 +10,7 @@ from bin_look import bin_lokup
 
 cooldowns = {}
 
-bot = telebot.TeleBot(config.MAIN_TOKEN)
+bot = telebot.TeleBot(config.TEST_TOKEN)
 
 CHANNEL_ID = -1001838455066
 POST_CHANNEL = -1002078366567
@@ -84,7 +84,7 @@ def check_cc(message):
 
       # Rest of your /cs command logic here
       cc_number = message.text.split(' ')[1]
-      msg = bot.reply_to(message, "𝐂𝐇𝐄𝐂𝐊𝐈𝐍𝐆 ◈◇◇◇", parse_mode='Markdown')
+      msg = bot.reply_to(message, "<b>CHECKING ◈◇◇◇</b>", parse_mode='HTML')
       check_thread = threading.Thread(target=checking_function,
                                       args=(cc_number, bot, msg,
                                             update_cooldown, user_id))
