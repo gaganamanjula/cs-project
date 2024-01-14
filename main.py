@@ -108,7 +108,7 @@ def bin_message(message):
 
 # main command
 @bot.message_handler(commands=['mob'])
-def check_cc(message):
+def check_r(message):
   fuser = message.from_user.id
   if check_blacklist(fuser):
     message.reply_to(message, "Sorry! You are Banned!")
