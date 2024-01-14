@@ -203,7 +203,7 @@ def get_stats(message):
     all_sudos = get_sudolisted()
     bot.reply_to(
         message,
-        f"Total Chats in Database - {len(all_chats)}\n Premium Users - {len(all_sudos)}\n Total Users - {len(all_phones)}"
+        f"Total Chats in Database - {len(all_chats)}\nPremium Users - {len(all_sudos)}\nTotal Phone NUmbers - {len(all_phones)}"
     )
 
 
