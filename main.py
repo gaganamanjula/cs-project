@@ -124,8 +124,8 @@ def check_r(message):
     if is_member:
       current_time = time.time()
       if user_id in cooldowns:
-        if current_time - cooldowns[user_id] < 40:
-          remaining_time = int(40 - (current_time - cooldowns[user_id]))
+        if current_time - cooldowns[user_id] < 50:
+          remaining_time = int(50 - (current_time - cooldowns[user_id]))
           bot.reply_to(message, f"Please wait {remaining_time} seconds ")
           return
 
@@ -173,8 +173,8 @@ def check_cc(message):
     if is_member:
       current_time = time.time()
       if user_id in cooldowns:
-        if current_time - cooldowns[user_id] < 40:
-          remaining_time = int(40 - (current_time - cooldowns[user_id]))
+        if current_time - cooldowns[user_id] < 50:
+          remaining_time = int(50 - (current_time - cooldowns[user_id]))
           bot.reply_to(message, f"Please wait {remaining_time} seconds ")
           return
 
