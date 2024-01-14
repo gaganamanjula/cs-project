@@ -144,9 +144,11 @@ def check_cc(message):
       except Exception as e:
         print(f"Error forwarding message: {e}")
 
-  except Exception as e:
-    return bot.send_message(message.chat.id,
-                            'Error processing the credit card: {}'.format(e))
+  except IndexError:
+      return bot.reply_to(
+          message,
+          "<b>Send This command in the below format👇</b>\n\n<code>/reload cc_number</code> (Replace 'cc_number', before using this command you have to add the phone number to the bot, for more info send /add_phone command!)",
+          parse_mode='HTML')
 
 
 # Broadcast commands
