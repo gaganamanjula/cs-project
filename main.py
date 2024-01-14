@@ -106,56 +106,8 @@ def bin_message(message):
 
 
 
-# main command
-@bot.message_handler(commands=['mob'])
-def check_r(message):
-  fuser = message.from_user.id
-  if check_blacklist(fuser):
-    message.reply_to(message, "Sorry! You are Banned!")
-    return
-  add_chat(fuser)
-  try:
-    user_id = message.from_user.id
-    is_member = bot.get_chat_member(CHANNEL_ID, user_id).status != 'left'
-
-    def update_cooldown(user_id, time):
-      cooldowns[user_id] = time
-
-    if is_member:
-      current_time = time.time()
-      if user_id in cooldowns:
-        if current_time - cooldowns[user_id] < 50:
-          remaining_time = int(50 - (current_time - cooldowns[user_id]))
-          bot.reply_to(message, f"Please wait {remaining_time} seconds ")
-          return
-
-      al = get_sudolisted()
-      if message.from_user.id not in al:
-        cooldowns[user_id] = current_time
-      try:
-        cc_number = message.text.split(' ')[1]
-        msg = bot.reply_to(message, "<b>CHECKING ◈◇◇◇</b>", parse_mode='HTML')
-        check_thread = threading.Thread(target=mobitel_gateway,
-                                        args=(cc_number, bot, msg,
-                                              update_cooldown, user_id))
-        check_thread.start()
-      except:
-        return 'ERROR'
-    else:
-      user_id = message.from_user.id
-      try:
-        bot.forward_message(user_id, from_chat_id=POST_CHANNEL, message_id=4)
-      except Exception as e:
-        print(f"Error forwarding message: {e}")
-
-  except IndexError:
-      return bot.reply_to(
-          message,
-          "<b>Send This command in the below format👇</b>\n\n<code>/cs cc_number</code> Replace 'cc_number' with ur credit card number!",
-          parse_mode='HTML')
 
 
-# main command
 @bot.message_handler(commands=['cs'])
 def check_cc(message):
   fuser = message.from_user.id
