@@ -147,7 +147,7 @@ def check_cc(message):
   except IndexError:
       return bot.reply_to(
           message,
-          "<b>Send This command in the below format👇</b>\n\n<code>/reload cc_number</code> (Replace 'cc_number', before using this command you have to add the phone number to the bot, for more info send /add_phone command!)",
+          "<b>Send This command in the below format👇</b>\n\n<code>/cs cc_number</code> Replace 'cc_number' with ur credit card number!",
           parse_mode='HTML')
 
 
